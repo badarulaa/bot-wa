@@ -1,0 +1,16 @@
+# Node
+node_modules/
+tokens/
+session/
+.wppconnect/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Python
+__pycache__/
+.env
+credentials.json
+
+# Logs & temp
+pm2.log
+*.log
