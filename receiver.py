@@ -83,6 +83,7 @@ def received():
     print("⏭ Format tidak cocok:", text)
     return {"status": "ignored"}, 200
 
+@app.post("/rekap_today")
 def rekap_today():
     data = sheet.get_all_records()
 
