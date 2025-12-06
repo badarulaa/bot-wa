@@ -44,7 +44,7 @@ wppconnect
         }
 
         // 📆 Rekap mingguan
-        if (text === "rekap minggu") {
+        if (text === "rekap mingguan") {
           const res = await axios.get(
             `http://127.0.0.1:${process.env.RECEIVER_PORT}/rekap_week`
           );
@@ -53,7 +53,7 @@ wppconnect
         }
 
         // 🗓 Rekap bulanan
-        if (text === "rekap bulan") {
+        if (text === "rekap bulanan") {
           const res = await axios.get(
             `http://127.0.0.1:${process.env.RECEIVER_PORT}/rekap_month`
           );
