@@ -88,17 +88,16 @@ def rekap_today():
     data = sheet.get_all_records()
 
     today = datetime.now().strftime("%Y-%m-%d")
-    filtered = [row for row in data if str(row["timestamp"]).startswith(today)]
+    filtered = [row for row in data if str(row['timestamp']).startswith(today)]
 
     if not filtered:
-        return {"text": "Belum ada transaksi hari ini."}, 200
+        return {"text": "📄 Belum ada transaksi hari ini"}, 200
 
-    total = sum(row["nominal"] for row in filtered)
+    total = sum(row['nominal'] for row in filtered)
 
     pesan = f"📊 Rekap Hari Ini ({today})\n"
     pesan += f"Total transaksi: {len(filtered)}\n"
     pesan += f"Total saldo: Rp {total:,}".replace(",", ".")
     return {"text": pesan}, 200
-
 
 app.run(host="0.0.0.0", port=int(os.getenv("RECEIVER_PORT",5000)))
