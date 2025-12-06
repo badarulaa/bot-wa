@@ -5,6 +5,7 @@ session/
 .wppconnect/
 .wwebjs_auth/
 .wwebjs_cache/
+package-lock.json
 
 # Python
 __pycache__/
