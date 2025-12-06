@@ -70,3 +70,5 @@ def rekap_month():
 @app.get("/")
 def home():
     return "Receiver is running"
+
+app.run(host="0.0.0.0", port=int(os.getenv("RECEIVER_PORT", "5000")))
