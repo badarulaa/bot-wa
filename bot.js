@@ -35,8 +35,7 @@ wppconnect
       const text = message.body.trim().toLowerCase();
 
       try {
-        // 🟦 Perintah Rekap
-        if (text === "rekap") {
+        if (text === "rekap hari") {
           const res = await axios.get(
             `http://127.0.0.1:${process.env.RECEIVER_PORT}/rekap_today`
           );
@@ -44,7 +43,24 @@ wppconnect
           return;
         }
 
-        // 🟩 Input transaksi
+        // 📆 Rekap mingguan
+        if (text === "rekap minggu") {
+          const res = await axios.get(
+            `http://127.0.0.1:${process.env.RECEIVER_PORT}/rekap_week`
+          );
+          await client.sendText(message.chatId, res.data.text);
+          return;
+        }
+
+        // 🗓 Rekap bulanan
+        if (text === "rekap bulan") {
+          const res = await axios.get(
+            `http://127.0.0.1:${process.env.RECEIVER_PORT}/rekap_month`
+          );
+          await client.sendText(message.chatId, res.data.text);
+          return;
+        }
+
         await axios.post(
           `http://127.0.0.1:${process.env.RECEIVER_PORT}/received`,
           {
