@@ -15,7 +15,7 @@ SCOPES = [
 ]
 
 creds = Credentials.from_service_account_file(
-    "credentials.json",
+    os.getenv("GOOGLE_CREDENTIALS_PATH"),
     scopes=SCOPES
 )
 client = gspread.authorize(creds)
