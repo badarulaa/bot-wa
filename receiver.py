@@ -14,7 +14,10 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file("credentials.json", scopes=SCOPES)
+creds = Credentials.from_service_account_file(
+    "credentials.json",
+    scopes=SCOPES
+)
 client = gspread.authorize(creds)
 
 SPREADSHEET_ID = os.getenv("GOOGLE_SHEET_ID")
@@ -40,19 +43,23 @@ def hitung_rekap(filter_func):
 def rekap_today():
     today = datetime.now().strftime("%Y-%m-%d")
     text = f"📅 Rekap Hari Ini ({today})\n"
-    text += hitung_rekap(lambda r: str(r['timestamp']).startswith(today))
+    text += hitung_rekap(
+        lambda r: str(r['timestamp']).startswith(today)
+    )
     return {"text": text}, 200
 
 
 @app.get("/rekap_week")
 def rekap_week():
     now = datetime.now()
-    minggu_awal = now - timedelta(days=now.weekday())  # Senin minggu ini
+    minggu_awal = now - timedelta(days=now.weekday())
     awal_str = minggu_awal.strftime("%Y-%m-%d")
     akhir_str = now.strftime("%Y-%m-%d")
 
     text = f"📆 Rekap Minggu Ini ({awal_str} → {akhir_str})\n"
-    text += hitung_rekap(lambda r: awal_str <= str(r['timestamp'])[:10] <= akhir_str)
+    text += hitung_rekap(
+        lambda r: awal_str <= str(r['timestamp'])[:10] <= akhir_str
+    )
     return {"text": text}, 200
 
 
@@ -63,7 +70,9 @@ def rekap_month():
     akhir_str = now.strftime("%Y-%m-%d")
 
     text = f"🗓 Rekap Bulan Ini ({awal_str} → {akhir_str})\n"
-    text += hitung_rekap(lambda r: awal_str <= str(r['timestamp'])[:10] <= akhir_str)
+    text += hitung_rekap(
+        lambda r: awal_str <= str(r['timestamp'])[:10] <= akhir_str
+    )
     return {"text": text}, 200
 
 
@@ -71,4 +80,9 @@ def rekap_month():
 def home():
     return "Receiver is running"
 
-app.run(host="0.0.0.0", port=int(os.getenv("RECEIVER_PORT", "5000")))
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("RECEIVER_PORT", "5000"))
+    )
