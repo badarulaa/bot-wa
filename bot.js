@@ -38,7 +38,7 @@ wppconnect
 
       try {
         // 📅 Rekap Hari Ini
-        if (text === "rekap hari") {
+        if (text === "rekap harian") {
           const res = await axios.get(`${RECEIVER_URL}/rekap_today`);
           await client.sendText(message.chatId, res.data.text);
           return;

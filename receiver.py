@@ -36,18 +36,41 @@ def parse_message(text: str):
     ket = " ".join(parts[1:-1])
     nominal_raw = parts[-1].lower()
 
+    # Bersihkan prefix dan separator
     nominal_raw = (
         nominal_raw.replace("rp", "")
+        .replace(" ", "")
         .replace(".", "")
         .replace(",", "")
         .strip()
     )
 
+    # Format akhiran "k"
+    if nominal_raw.endswith("k"):
+        angka = nominal_raw[:-1]
+        if angka.isdigit():
+            return nama, ket, int(angka) * 1000
+        return None
+
+    # Format akhiran "rb" atau "ribu"
+    if nominal_raw.endswith("rb") or nominal_raw.endswith("ribu"):
+        angka = nominal_raw.replace("rb", "").replace("ribu", "")
+        if angka.isdigit():
+            return nama, ket, int(angka) * 1000
+        return None
+
+    # Format akhiran "jt" atau "juta"
+    if nominal_raw.endswith("jt") or nominal_raw.endswith("juta"):
+        angka = nominal_raw.replace("jt", "").replace("juta", "")
+        if angka.isdigit():
+            return nama, ket, int(angka) * 1_000_000
+        return None
+
+    # Format angka murni
     if nominal_raw.isdigit():
         return nama, ket, int(nominal_raw)
 
     return None
-
 
 # ==================== REKAP ====================
 def hitung_rekap(filter_func, header_text):
