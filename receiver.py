@@ -4,6 +4,12 @@ from google.oauth2.service_account import Credentials
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+import sys
+
+# -*- coding: utf-8 -*-
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 
 # Load .env
 load_dotenv()
