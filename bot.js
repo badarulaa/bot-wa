@@ -10,6 +10,7 @@ wppconnect
   .create({
     session: "keuangan",
     autoClose: false,
+    waitForLogin: true,
     puppeteerOptions: {
       headless: true,
       args: [
@@ -22,12 +23,22 @@ wppconnect
         "--single-process",
       ],
     },
+    disableWelcome: true
   })
   .then((client) => {
     console.log("\n======================================");
     console.log("✅ BOT AKTIF 🚀");
     console.log("🎯 Listen ke grup:", TARGET_GROUP_ID);
     console.log("======================================\n");
+
+    setInterval(async () => {
+      try {
+        await client.getHostDevice();
+        console.log("🔄 Koneksi aktif");
+      } catch (err) {
+        console.log("❌ Koneksi putus, mencoba menyambung ulang...", err.message);
+      }
+    }, 60 * 1000);
 
     client.onMessage(async (message) => {
       if (!message.isGroupMsg || message.chatId !== TARGET_GROUP_ID) {
