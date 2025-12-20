@@ -91,12 +91,16 @@ wppconnect
         }
 
         // ====== TRANSAKSI ======
-        await axios.post(`${RECEIVER_URL}/received`, {
+        const res = await axios.post(`${RECEIVER_URL}/received`, {
           text: message.body,
           sender: message.sender?.id || message.from,
         });
 
-        console.log("✔ Data dikirim ke receiver");
+        if (res.data?.reply) {
+          await client.sendText(message.chatId, res.data.reply);
+        }
+
+        console.log("✔ Data dikirim & dibalas");
       } catch (err) {
         console.log("❌ Error kirim ke receiver:", err.message);
       }
