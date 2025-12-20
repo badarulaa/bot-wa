@@ -103,12 +103,35 @@ def received():
 
     parsed = parse_message(text)
     if not parsed:
-        return {"status": "ignored"}, 200
+        return {
+            "ok": False,
+            "reply": (
+                "❌ Format tidak dikenali\n"
+                "Contoh:\n"
+                "bca makan siang 25k\n"
+                "bca gaji 10jt"
+            )
+        }, 200
 
+    nama, ket, nominal = parsed
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    sheet.append_row([timestamp, *parsed])
 
-    return {"status": "saved"}, 200
+    sheet.append_row([timestamp, nama, ket, nominal])
+
+    reply_text = (
+        "✅ Transaksi tersimpan\n"
+        "━━━━━━━━━━━━━━\n"
+        f"🏦 Nama: {nama.upper()}\n"
+        f"📝 Ket: {ket}\n"
+        f"💰 Nominal: Rp {nominal:,}\n"
+        f"📅 {timestamp}"
+    ).replace(",", ".")
+
+    return {
+        "ok": True,
+        "reply": reply_text
+    }, 200
+
 
 
 @app.get("/rekap_today")
