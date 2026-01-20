@@ -1,0 +1,18 @@
+# Node
+node_modules/
+tokens/
+session/
+.wppconnect/
+.wwebjs_auth/
+.wwebjs_cache/
+package-lock.json
+
+# Python
+__pycache__/
+.env
+credentials.json
+
+# Logs & temp
+pm2.log
+*.log
+root@47.245.111.31

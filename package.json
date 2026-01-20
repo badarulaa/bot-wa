@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@wppconnect-team/wppconnect": "^1.37.8",
+    "dotenv": "^17.2.3"
+  },
+  "name": "bot-keuanganv2",
+  "version": "1.0.0",
+  "description": "For Self Learning V2",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badarulaa/bot-wa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/badarulaa/bot-wa/issues"
+  },
+  "homepage": "https://github.com/badarulaa/bot-wa#readme"
+}
