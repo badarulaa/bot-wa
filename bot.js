@@ -3,7 +3,7 @@ require("dotenv").config();
 const {
   default: makeWASocket,
   useMultiFileAuthState,
-  DisconnectReason
+  DisconnectReason,
 } = require("@whiskeysockets/baileys");
 
 const Pino = require("pino");
@@ -19,21 +19,24 @@ async function startBot() {
   if (isConnecting) return;
   isConnecting = true;
 
+  console.log("🚀 Starting WhatsApp bot...");
+
   const { state, saveCreds } = await useMultiFileAuthState("auth_info");
 
   const sock = makeWASocket({
     auth: state,
     logger: Pino({ level: "silent" }),
-    browser: ["Ubuntu", "Chrome", "20.0"]
+    browser: ["Ubuntu", "Chrome", "20.0"],
   });
 
   sock.ev.on("creds.update", saveCreds);
 
+  // ================= CONNECTION =================
   sock.ev.on("connection.update", (update) => {
     const { connection, lastDisconnect, qr } = update;
 
     if (qr) {
-      console.log("📱 Scan QR:");
+      console.log("\n📱 Scan QR Code:");
       qrcode.generate(qr, { small: true });
     }
 
@@ -43,25 +46,25 @@ async function startBot() {
     }
 
     if (connection === "close") {
-      const statusCode =
-        lastDisconnect?.error?.output?.statusCode;
+      const statusCode = lastDisconnect?.error?.output?.statusCode;
 
-      console.log("❌ Koneksi terputus:", statusCode);
+      console.log("❌ Connection closed:", statusCode ?? "unknown");
 
       isConnecting = false;
 
       if (statusCode !== DisconnectReason.loggedOut) {
-        console.log("⏳ Reconnect 10 detik...");
+        console.log("⏳ Reconnecting in 10 seconds...");
         setTimeout(startBot, 10000);
       } else {
-        console.log("❌ Logged out. Hapus auth_info dan scan ulang.");
+        console.log("❌ Logged out. Delete 'auth_info' and scan QR again.");
       }
     }
   });
 
+  // ================= MESSAGE HANDLER =================
   sock.ev.on("messages.upsert", async ({ messages }) => {
-    const msg = messages[0];
-    if (!msg.message) return;
+    const msg = messages?.[0];
+    if (!msg || !msg.message) return;
 
     const from = msg.key.remoteJid;
     if (from !== TARGET_GROUP_ID) return;
@@ -72,13 +75,19 @@ async function startBot() {
 
     if (!text) return;
 
+    console.log("📩 Pesan diterima:", text);
+
     try {
       await axios.post(`${RECEIVER_URL}/received`, { text });
-      await sock.sendMessage(from, { text: "✅ Dicatat" });
-    } catch {
-      await sock.sendMessage(from, { text: "❌ Error sistem" });
+      console.log("✔ Terkirim ke receiver");
+    } catch (err) {
+      console.error(
+        "❌ Gagal kirim ke receiver:",
+        err.response?.status || err.message
+      );
     }
   });
 }
 
+// ================= START =================
 startBot();
