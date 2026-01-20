@@ -11,6 +11,7 @@ package-lock.json
 __pycache__/
 .env
 credentials.json
+.DS_Store
 
 # Logs & temp
 pm2.log
