@@ -170,6 +170,9 @@ def rekap_month():
         )
     }, 200
 
+@app.get("/")
+def home():
+    return "Receiver is running.", 200
 
 # ==================== RUN APP ====================
 if __name__ == "__main__":
